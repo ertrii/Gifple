@@ -1,4 +1,5 @@
 ﻿'use strict';
+let Sequences;
 (function(){
     const canvas = document.getElementById('gif-container')
     const plane = document.getElementById('plane')
@@ -33,115 +34,111 @@
         }
     }
 
-    const containerImg = document.getElementById('container-img-canvas')
-    const imgCanvas = document.getElementById('img-canvas')
-    const sequencesImg = [
-        {
-            index : 0,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/0',
-            delay : 100,
-            vector : {
-                x : 6,
-                y : -33
-            }
-        },
-        {
-            index : 1,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/1',
-            delay : 60,
-            vector : {
-                x : 0,
-                y : -32
-            }
-        },
-        {
-            index : 2,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/2',
-            delay : 60,
-            vector : {
-                x : -6,
-                y : -33
-            }
-        },
-        {
-            index : 3,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/3',
-            delay : 60,
-            vector : {
-                x : -12,
-                y : -32
-            }
-        },
-        {
-            index : 4,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/4',
-            delay : 60,
-            vector : {
-                x : -18,
-                y : -33
-            }
-        },
-        {
-            index : 5,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/5',
-            delay : 60,
-            vector : {
-                x : -24,
-                y : -32
-            }
-        },
-        {
-            index : 6,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/6',
-            delay : 60,
-            vector : {
-                x : -30,
-                y : -33
-            }
-        },
-        {
-            index : 7,
-            src : 'https://maplestory.io/api/0/83/npc/10000/render/move/7',
-            delay : 60,
-            vector : {
-                x : -36,
-                y : -32
+    class Sequence{
+        constructor(el, sequence){
+            this.el = document.getElementById(el)
+            this.sequence = sequence
+            this.containerSequence = document.createElement('div')
+            this.btnStopAnimate = document.getElementById('btn-stop-animate')
+            this.option = {
+                index : 0,
+                stop : false,
+                repeat : true
+            }            
+        }
+        animate(){
+            if(this.option.stop) return
+            let img = this.sequence[this.option.index]
+            document.getElementById('img-canvas').src = img.src
+            document.getElementById('container-img-canvas').style.transform = `translate(${img.vector.x}px, ${img.vector.y}px)`
+            this.option.index++
+    
+            setTimeout( () => this.animate(), img.delay)
+    
+            if(this.option.index >= this.sequence.length) {
+                if(this.option.repeat) this.option.index = 0
+                else {
+                    this.option.index = 0
+                    this.option.stop = true
+                    this.btnStopAnimate.innerHTML = '⊳'
+                    return
+                }
             }
         }
-    ]
-    let index = 0, stopAnimate = false, repeat = true
-    const btnStopAnimate = document.getElementById('btn-stop-animate')
-    const animate = () => {
-        if(stopAnimate) return
-        let img = sequencesImg[index]
-        imgCanvas.src = img.src
-        containerImg.style.transform = `translate(${img.vector.x}px, ${img.vector.y}px)`
-        index++
-        
-        if(index >= sequencesImg.length) {
-            if(repeat) index = 0
-            else {
-                index = 0
-                stopAnimate = true
-                btnStopAnimate.innerHTML = '⊳'
-                return
+        structure(image){
+            let sequenceProperty = document.createElement('div')
+            sequenceProperty.setAttribute('class', 'images')
+                const contentImg = document.createElement('div')
+                contentImg.setAttribute('class', 'content-img')
+                    const img = document.createElement('img')
+                    img.setAttribute('src', image.src)
+                contentImg.appendChild(img)
+                
+                const contentProperty = document.createElement('div')
+                contentProperty.setAttribute('class', 'content-property')
+                    const p1 = document.createElement('p')
+                        const strong1 = document.createElement('strong')
+                        strong1.appendChild(document.createTextNode(`#${image.index}`))
+                    p1.appendChild(strong1)
+
+                    const p2 = document.createElement('p')
+                        const strong2 = document.createElement('strong')
+                        strong2.appendChild(document.createTextNode('Delay: '))
+                    p2.appendChild(strong2)
+                    p2.appendChild(document.createTextNode(image.delay))
+
+                    const p3 = document.createElement('p')
+                        const strong3 = document.createElement('strong')
+                        strong3.appendChild(document.createTextNode('x: '))
+                    p3.appendChild(strong3)
+                    p3.appendChild(document.createTextNode(image.vector.x))
+
+                    const p4 = document.createElement('p')
+                        const strong4 = document.createElement('strong')
+                        strong4.appendChild(document.createTextNode('y: '))
+                    p4.appendChild(strong4)
+                    p4.appendChild(document.createTextNode(image.vector.y))
+                contentProperty.appendChild(p1)
+                contentProperty.appendChild(p2)
+                contentProperty.appendChild(p3)
+                contentProperty.appendChild(p4)
+            sequenceProperty.appendChild(contentImg)
+            sequenceProperty.appendChild(contentProperty)
+            return sequenceProperty
+
+        }
+        start(){
+            this.animate()
+            this.btnStopAnimate.onclick = () =>{
+                if(!this.option.stop){
+                    this.option.stop = true
+                    this.btnStopAnimate.innerHTML = '⊳'
+                }
+                else {
+                    this.option.stop = false
+                    this.btnStopAnimate.innerHTML = '∎'
+                    this.animate()
+                }
             }
-        }
-        setTimeout(()=>{
-            animate()
-        }, sequencesImg[index].delay)
-    }
-    animate()
-    btnStopAnimate.onclick = () =>{
-        if(!stopAnimate){
-            stopAnimate = true
-            btnStopAnimate.innerHTML = '⊳'
-        }
-        else {
-            stopAnimate = false
-            btnStopAnimate.innerHTML = '∎'
-            animate()
+
+            this.sequence.forEach(image => {
+                this.containerSequence.appendChild(this.structure(image))
+            });
+            this.el.appendChild(this.containerSequence)
         }
     }
-    repeat = false
+
+
+    Sequences = Sequence
 })()
+
+fetch('images.json').
+    then( response =>{
+        return response.json()
+    })
+    .then( images => {
+        new Sequences('sequences', images).start()
+    })
+    .catch( () => {
+        console.error('Not found the images in images.json')
+    })

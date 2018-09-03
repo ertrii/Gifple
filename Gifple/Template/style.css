@@ -17,6 +17,7 @@ header{
     justify-content: center;
     align-items: center;
     width: 100%;
+    overflow: hidden;
 }
 header .gif{
     position: relative;
