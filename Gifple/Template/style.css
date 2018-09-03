@@ -10,7 +10,6 @@ body{
 }
 header{
     background-color: #424242;
-    cursor: pointer;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -22,7 +21,6 @@ header{
 header .gif{
     position: relative;
     z-index: 100;
-    transform: translate(6px, -33px);
 }
 header .plane{
     position: absolute;
@@ -44,6 +42,23 @@ header .plane .y{
     height: 100vh;
     width: 1px;
     bottom: 0;
+}
+.btn-stop-animate, .btn-plane{
+    position: absolute;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 7px 9px;
+    border: none;
+    z-index: 100;
+    background-color: steelblue;
+    color: white;
+    bottom: 25px;
+}
+.btn-plane{
+    right: 25px;
+}
+.btn-stop-animate{
+    right: 65px;
 }
 .main-container{
     background-color: #FAFAFA;

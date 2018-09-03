@@ -9,13 +9,15 @@
 </head>
 <body>
 <div class="container">
+    <button class="btn-stop-animate" id="btn-stop-animate" title="stop animate">∎</button>
+    <button class="btn-plane" id="btn-plane" title="plane visible">✛</button>
     <header class="gif-container" id="gif-container">
-        <div class="plane active-plane">
+        <div class="plane" id="plane">
             <div class="x"></div>
             <div class="y"></div>
         </div>
-        <div class="gif">
-            <img src="https://maplestory.io/api/0/83/npc/10000/render/move/0" alt="img">
+        <div class="gif" id="container-img-canvas">
+            <img src="https://maplestory.io/api/0/83/npc/10000/render/move/0" alt="img" id="img-canvas">
         </div>        
     </header>
     <div class="main-container">
@@ -25,30 +27,101 @@
             <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum obcaecati dolores ea illo nulla architecto sint necessitatibus mollitia iste eos numquam soluta, quidem earum? Esse error ipsam ut voluptatem ab?</p>
             <div class="sequences">
                 
-                <div class="images image1">
+                <div class="images image0">
                     <div class="content-img">
                         <img src="https://maplestory.io/api/0/83/npc/10000/render/move/0" alt="img">
                     </div>
                     <div class="content-property">
+                        <p><strong>#0</strong></p>
+                        <p><strong>Delay: </strong> 60</p>
+                        <p><strong>x: </strong> 6</p>
+                        <p><strong>y: </strong> 33</p>
+                    </div>
+                </div>
+
+                <div class="images image1">
+                    <div class="content-img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/1" alt="img">
+                    </div>
+                    <div class="content-property">
                         <p><strong>#1</strong></p>
                         <p><strong>Delay: </strong> 60</p>
-                        <p><strong>x: </strong> 15</p>
-                        <p><strong>y: </strong> 150</p>
+                        <p><strong>x: </strong> 0</p>
+                        <p><strong>y: </strong> 32</p>
                     </div>
                 </div>
 
                 <div class="images image2">
                     <div class="content-img">
-                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/0" alt="img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/2" alt="img">
                     </div>
                     <div class="content-property">
                         <p><strong>#2</strong></p>
                         <p><strong>Delay: </strong> 60</p>
-                        <p><strong>x: </strong> 50</p>
-                        <p><strong>y: </strong> 17</p>
+                        <p><strong>x: </strong> -6</p>
+                        <p><strong>y: </strong> 33</p>
                     </div>
                 </div>
-                
+
+                <div class="images image3">
+                    <div class="content-img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/3" alt="img">
+                    </div>
+                    <div class="content-property">
+                        <p><strong>#3</strong></p>
+                        <p><strong>Delay: </strong> 60</p>
+                        <p><strong>x: </strong> -12</p>
+                        <p><strong>y: </strong> 32</p>
+                    </div>
+                </div>
+
+                <div class="images image4">
+                    <div class="content-img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/4" alt="img">
+                    </div>
+                    <div class="content-property">
+                        <p><strong>#4</strong></p>
+                        <p><strong>Delay: </strong> 60</p>
+                        <p><strong>x: </strong> -18</p>
+                        <p><strong>y: </strong> 33</p>
+                    </div>
+                </div>
+
+                <div class="images image5">
+                    <div class="content-img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/5" alt="img">
+                    </div>
+                    <div class="content-property">
+                        <p><strong>#5</strong></p>
+                        <p><strong>Delay: </strong> 60</p>
+                        <p><strong>x: </strong> -24</p>
+                        <p><strong>y: </strong> 32</p>
+                    </div>
+                </div>
+
+                <div class="images image6">
+                    <div class="content-img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/6" alt="img">
+                    </div>
+                    <div class="content-property">
+                        <p><strong>#6</strong></p>
+                        <p><strong>Delay: </strong> 60</p>
+                        <p><strong>x: </strong> -30</p>
+                        <p><strong>y: </strong> 33</p>
+                    </div>
+                </div>
+
+                <div class="images image7">
+                    <div class="content-img">
+                        <img src="https://maplestory.io/api/0/83/npc/10000/render/move/7" alt="img">
+                    </div>
+                    <div class="content-property">
+                        <p><strong>#7</strong></p>
+                        <p><strong>Delay: </strong> 60</p>
+                        <p><strong>x: </strong> -36</p>
+                        <p><strong>y: </strong> 32</p>
+                    </div>
+                </div>
             </div>
         </main>
         <footer>
