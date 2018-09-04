@@ -73,10 +73,10 @@ header .plane .y{
     min-height: 100vh;
 }
 
-.name-gif-proyect, .autor, .description{
+.proyect-name, .autor, .description{
     text-align: center;
 }
-.name-gif-proyect{
+.proyect-name{
     margin-top: 15px;
 }
 .autor{
@@ -86,17 +86,17 @@ header .plane .y{
     font-family: serif;
 }
 
-.sequences{
+.sequence{
     margin-top: 75px;
     margin-bottom: 75px;
 }
-.sequences .images{
+.sequence .images{
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ccc;
     margin-bottom: 15px;
 }
-.sequences .images .content-img{
+.sequence .images .content-img{
     min-width: 100px;
     padding: 2px;
     min-height: 100px;
@@ -107,14 +107,14 @@ header .plane .y{
     align-items: center;
     margin-right: 15px;
 }
-.sequences .images .content-img img{
+.sequence .images .content-img img{
     display: inline;
 }
-.sequences .images .content-property p{
+.sequence .images .content-property p{
     font-size: 10pt;
     margin-bottom: 3px;
 }
-.sequences .images .content-property p strong{
+.sequence .images .content-property p strong{
     color: steelblue;
 }
 footer{

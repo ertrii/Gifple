@@ -1,7 +1,7 @@
 ﻿'use strict';
 let Sequences;
 (function(){
-    const canvas = document.getElementById('gif-container')
+    const canvas = document.getElementById('canvas')
     const plane = document.getElementById('plane')
     let themeCanvas = 0
 
@@ -15,8 +15,8 @@ let Sequences;
         }else{
             //theme white
             canvas.style.backgroundColor = '#ccc'
-            plane.children[0].style.backgroundColor = '#eee'
-            plane.children[1].style.backgroundColor = '#eee'
+            plane.children[0].style.backgroundColor = '#aaa'
+            plane.children[1].style.backgroundColor = '#aaa'
             themeCanvas = 1
         }
     }
@@ -35,10 +35,9 @@ let Sequences;
     }
 
     class Sequence{
-        constructor(el, sequence){
+        constructor(el, images){
             this.el = document.getElementById(el)
-            this.sequence = sequence
-            this.containerSequence = document.createElement('div')
+            this.images = images
             this.btnStopAnimate = document.getElementById('btn-stop-animate')
             this.option = {
                 index : 0,
@@ -48,14 +47,14 @@ let Sequences;
         }
         animate(){
             if(this.option.stop) return
-            let img = this.sequence[this.option.index]
+            let img = this.images[this.option.index]
             document.getElementById('img-canvas').src = img.src
             document.getElementById('container-img-canvas').style.transform = `translate(${img.vector.x}px, ${img.vector.y}px)`
             this.option.index++
     
             setTimeout( () => this.animate(), img.delay)
     
-            if(this.option.index >= this.sequence.length) {
+            if(this.option.index >= this.images.length) {
                 if(this.option.repeat) this.option.index = 0
                 else {
                     this.option.index = 0
@@ -120,11 +119,11 @@ let Sequences;
                     this.animate()
                 }
             }
-
-            this.sequence.forEach(image => {
-                this.containerSequence.appendChild(this.structure(image))
+            const containerSequence = document.createElement('div')
+            this.images.forEach(image => {
+                containerSequence.appendChild(this.structure(image))
             });
-            this.el.appendChild(this.containerSequence)
+            this.el.appendChild(containerSequence)
         }
     }
 
@@ -137,8 +136,18 @@ fetch('images.json').
         return response.json()
     })
     .then( images => {
-        new Sequences('sequences', images).start()
+
+        fetch('config.json').then( response => {
+            return response.json()
+        }).then( config => {
+            document.getElementById('head-title').innerHTML = config.proyectName
+            document.getElementById('proyect-name').innerHTML = config.proyectName
+            document.getElementById('autor').innerHTML = config.autor
+            document.getElementById('description').innerHTML = config.description
+            const sequence = new Sequences('sequence', images)
+            sequence.option.repeat = config.repeat
+            sequence.start()
+        }).catch( () => console.error('Error config.json'))
+
     })
-    .catch( () => {
-        console.error('Not found the images in images.json')
-    })
+    .catch( () => console.error('Error images.json'))
