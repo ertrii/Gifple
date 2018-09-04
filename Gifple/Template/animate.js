@@ -131,23 +131,37 @@ let Sequences;
     Sequences = Sequence
 })()
 
-fetch('images.json').
-    then( response =>{
-        return response.json()
-    })
-    .then( images => {
-
-        fetch('config.json').then( response => {
-            return response.json()
-        }).then( config => {
-            document.getElementById('head-title').innerHTML = config.proyectName
-            document.getElementById('proyect-name').innerHTML = config.proyectName
-            document.getElementById('autor').innerHTML = config.autor
-            document.getElementById('description').innerHTML = config.description
-            const sequence = new Sequences('sequence', images)
-            sequence.option.repeat = config.repeat
-            sequence.start()
-        }).catch( () => console.error('Error config.json'))
-
-    })
-    .catch( () => console.error('Error images.json'))
+const config = {
+    proyectName : 'Proyect Name',
+    autor : 'Erick',
+    description : 'Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+    'date' : '12/12/12',
+    'repeat' : false
+}
+const img = [
+    {
+        "index" : 0,
+        "src" : "https://maplestory.io/api/0/83/npc/10000/render/move/0",
+        "delay" : 100,
+        "vector" : {
+            "x" : 6,
+            "y" : -33
+        }
+    },
+    {
+        "index" : 1,
+        "src" : "https://maplestory.io/api/0/83/npc/10000/render/move/1",
+        "delay" : 60,
+        "vector" : {
+            "x" : 0,
+            "y" : -32
+        }
+    }
+]
+document.getElementById('head-title').innerHTML = config.proyectName
+document.getElementById('proyect-name').innerHTML = config.proyectName
+document.getElementById('autor').innerHTML = config.autor
+document.getElementById('description').innerHTML = config.description
+const sequence = new Sequences('sequence', img)
+sequence.option.repeat = config.repeat
+sequence.start()
