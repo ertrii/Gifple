@@ -1,84 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+/*using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks;*/
 using System.IO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Web.Script.Serialization;
 
 namespace Gifple
 {
-    public class Gifple
-    {                
-        public Gifple(string name)
+    class Vector
+    {
+        public int x { get; set; }
+        public int y { get; set; }
+    }
+    class GifpleImage
+    {        
+        public GifpleImage(int index)
         {
-            this.name = name;
+            this.index = index;
         }
-
-        private String name;
-        public string Autor = "Anonymous";
-        private string description = null;
-        public bool Repeat = true;
-
-        private IMGFileGifple[] imageFiles;
-
-        public IMGFileGifple[] ImageFiles
-        {
-            set
-            {
-                imageFiles = value;
-            }
-
-        }
+        public int index { get; set; }
+        public string src { get; set; }
+        public int delay { get; set; }
+        public Vector vector { get; } = new Vector();
+    }
+    class GifpleConfig
+    {
+        public string name { get; set; }
+        public string autor { get; set; }
+        public string description { get; set; }
+        public string date { get; set; }
+        public bool repeat { get; set; }
+    }
+    public class GifpleGenerate
+    {
         
-        public String Description
-        {
-            set
-            {
-                description = value;
-            }
-        }
+        public string Name { get; set; }
+        public string Autor { get; set; } = "Anonymous";
+        public string Description { get; set; } = "";
+        public bool Repeat { get; set; } = true;
+        public IMGFileGifple[] ImageFiles { get; set; }
 
-        private List<Object> prepareJson()
+        private List<string> prepareJson()
         {
+            JavaScriptSerializer ser = new JavaScriptSerializer();
             //config.json
-            JObject jConfig = new JObject();
-            jConfig["proyectName"] = name;
-            jConfig["autor"] = Autor;
-            jConfig["description"] = description;
-            jConfig["date"] = DateTime.Now;
-            jConfig["repeat"] = Repeat;
+            GifpleConfig jConfig = new GifpleConfig()
+            {
+                name = Name,
+                autor = Autor,
+                description = Description,
+                date = DateTime.Today.ToString(),
+                repeat = Repeat
+            };
 
             //images.json
             int index = 0;
-            JArray jImages = new JArray();
-            foreach (IMGFileGifple img in imageFiles)
+            List<GifpleImage> jImage = new List<GifpleImage> { };
+            foreach (IMGFileGifple img in ImageFiles)
             {
-                JObject jImage = new JObject();
-                jImage["index"] = index;
-                jImage["src"] = img.Path;
-                jImage["delay"] = img.Delay;
-                JObject vector = new JObject();
-                vector["x"] = img.X;
-                vector["y"] = img.Y;
-                jImage["vector"] = vector;
-                jImages.Add(jImage);
+                GifpleImage gifpleImage = new GifpleImage(index)
+                {
+                    src = img.Path,
+                    delay = img.Delay,
+                };
+                gifpleImage.vector.x = img.X;
+                gifpleImage.vector.y = img.Y;
+                jImage.Add(gifpleImage);
                 index++;
             }
-            List<Object> jFiles = new List<Object>() { jConfig, jImages};
+            List<string> jFiles = new List<string>() {
+                ser.Serialize(jConfig),
+                ser.Serialize(jImage)
+            };
             return jFiles;
         }
         /// <summary>
         /// Generate sequence images.png in HTML file.
         /// </summary>
         /// <returns></returns>
-        public bool Generate(String outputPath)
+        public bool Generate(String outputPath = "")
         {            
-            if (imageFiles.Length < 1) return false;
-            List<Object> jsonFile = prepareJson();
-            File.WriteAllText("config.json", jsonFile[0].ToString());
-            File.WriteAllText("images.json", jsonFile[1].ToString());
+            if (ImageFiles.Length < 1) return false;
+            List<string> jsonFile = prepareJson();
+            File.WriteAllText(outputPath + "config.json", jsonFile[0]);
+            File.WriteAllText(outputPath + "images.json", jsonFile[1]);
             return true;
         }
 
