@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
+using System.Drawing;
 
 namespace Gifple
 {
@@ -41,7 +42,7 @@ namespace Gifple
         public string Name { get; set; }
         public string Autor { get; set; } = "Anonymous";
         public string Description { get; set; } = "";
-        public bool Repeat { get; set; } = true;
+        public bool Repeat { get; set; } = true;        
         public IMGFileGifple[] ImageFiles { get; set; }
 
         private List<string> prepareJson()
@@ -64,7 +65,7 @@ namespace Gifple
             {
                 GifpleImage gifpleImage = new GifpleImage(index)
                 {
-                    src = img.Path,
+                    src = $"img/{index}.png",
                     delay = img.Delay,
                 };
                 gifpleImage.vector.x = img.X;
@@ -78,13 +79,23 @@ namespace Gifple
             };
             return jFiles;
         }
+        private void saveBpm(string outputPath)
+        {
+            int index = 0;
+            foreach (IMGFileGifple img in ImageFiles)
+            {
+                img.Bmp.Save($"{outputPath}img/{index}.png");
+                index++;
+            }
+        }
         /// <summary>
         /// Generate sequence images.png in HTML file.
         /// </summary>
         /// <returns></returns>
-        public bool Generate(String outputPath = "")
+        public bool Generate(string outputPath = "")
         {            
             if (ImageFiles.Length < 1) return false;
+            //Bitmap img = new Bitmap(@"d:\");
             File.WriteAllText(outputPath + "index.html", Template.html);
             File.WriteAllText(outputPath + "style.css", Template.css);
             List<string> jsonFile = prepareJson();
@@ -92,6 +103,16 @@ namespace Gifple
             Template.js += $"const img = {jsonFile[1]};";
             Template.js += "document.getElementById('head-title').innerHTML=config.name,document.getElementById('proyect-name').innerHTML=config.name,document.getElementById('autor').innerHTML=config.autor,document.getElementById('description').innerHTML=config.description;const sequence=new Sequences('sequence',img);sequence.option.repeat=config.repeat,sequence.start();";
             File.WriteAllText(outputPath + "animate.js", Template.js);
+
+            if (Directory.Exists($"{outputPath}img"))
+            {
+                saveBpm(outputPath);
+            }else
+            {
+                Directory.CreateDirectory($"{outputPath}img");
+                saveBpm(outputPath);
+            }
+
             return true;
         }
 
@@ -99,7 +120,7 @@ namespace Gifple
 
     public class IMGFileGifple
     {
-        public String Path;
+        public Bitmap Bmp;
         private int delay = 60;
         public int X;
         public int Y;
