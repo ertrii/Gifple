@@ -98,16 +98,16 @@ header .plane .y{
 }
 .sequence .images .content-img{
     min-width: 100px;
-    padding: 2px;
     min-height: 100px;
-    max-width: 200px;
-    max-height: 200px;
+    padding: 2px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-right: 15px;
 }
 .sequence .images .content-img img{
+    max-width: 200px;
+    max-height: 200px;
     display: inline;
 }
 .sequence .images .content-property p{
@@ -128,4 +128,11 @@ footer .credits{
     max-width: 750px;
     margin: 0 auto;
     text-align: center;
+}
+footer .credits #copyright{
+    font-size: 9pt;
+}
+footer .credits #copyright a{
+    color: steelblue;
+    text-decoration: none;
 }
